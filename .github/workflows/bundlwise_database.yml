@@ -3,37 +3,86 @@ name: Deploy Database Schema to Railway
 on:
   push:
     branches:
-      - prod  # Trigger workflow only on the 'prod' branch
+      - prod
+    paths:
+      - 'database/**'
+      - '.github/workflows/bundlwise_database.yml'
 
 jobs:
   deploy-database:
     runs-on: ubuntu-latest
+    
+    env:
+      RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
+      PGHOST: ${{ secrets.PGHOST }}
+      PGPORT: ${{ secrets.PGPORT }}
+      PGDATABASE: ${{ secrets.PGDATABASE }}
+      PGUSER: ${{ secrets.PGUSER }}
+      PGPASSWORD: ${{ secrets.PGPASSWORD }}
 
     steps:
-      # Checkout code from the repository
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # Install Railway CLI
+      - name: Verify Environment Variables
+        run: |
+          if [ -z "$RAILWAY_API_TOKEN" ]; then
+            echo "Error: RAILWAY_API_TOKEN is not set"
+            exit 1
+          fi
+          if [ -z "$PGHOST" ] || [ -z "$PGPORT" ] || [ -z "$PGDATABASE" ] || [ -z "$PGUSER" ] || [ -z "$PGPASSWORD" ]; then
+            echo "Error: One or more PostgreSQL environment variables are not set"
+            exit 1
+          fi
+
       - name: Install Railway CLI
         run: |
           npm install -g @railway/cli
+          railway version
 
-      # Deploy Project and Apply Schema
-      - name: Deploy Database Schema
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          PGHOST: ${{ secrets.PGHOST }}
-          PGPORT: ${{ secrets.PGPORT }}
-          PGDATABASE: ${{ secrets.PGDATABASE }}
-          PGUSER: ${{ secrets.PGUSER }}
-          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+      - name: Install PostgreSQL client
         run: |
-          # Login to Railway
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Test Database Connection
+        run: |
+          if PGPASSWORD=$PGPASSWORD psql -h $PGHOST -p $PGPORT -d $PGDATABASE -U $PGUSER -c '\l' > /dev/null; then
+            echo "Database connection successful"
+          else
+            echo "Error: Could not connect to database"
+            exit 1
+          fi
+
+      - name: Deploy to Railway
+        run: |
+          echo "Logging into Railway..."
           railway login --browserless <<< "$RAILWAY_API_TOKEN"
+          
+          echo "Deploying project..."
+          railway up --detach || {
+            echo "Error: Failed to deploy to Railway"
+            exit 1
+          }
 
-          # Deploy Project
-          railway up --detach
+      - name: Apply Database Schema
+        run: |
+          echo "Applying database schema..."
+          PGPASSWORD=$PGPASSWORD psql -U $PGUSER -h $PGHOST -d $PGDATABASE -p $PGPORT -f database/bundlwise_schema.sql || {
+            echo "Error: Failed to apply database schema"
+            exit 1
+          }
 
-          # Apply the schema to the PostgreSQL database
-          railway run psql -U $PGUSER -h $PGHOST -d $PGDATABASE -p $PGPORT -f database/bundlwise_schema.sql
+      - name: Verify Schema Application
+        run: |
+          echo "Verifying schema application..."
+          PGPASSWORD=$PGPASSWORD psql -U $PGUSER -h $PGHOST -d $PGDATABASE -p $PGPORT -c "\dt" || {
+            echo "Error: Failed to verify schema"
+            exit 1
+          }
+          
+          # Verify users table exists and has correct structure
+          PGPASSWORD=$PGPASSWORD psql -U $PGUSER -h $PGHOST -d $PGDATABASE -p $PGPORT -c "\d users" || {
+            echo "Error: Users table verification failed"
+            exit 1
+          }
