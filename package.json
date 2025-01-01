@@ -1,0 +1,23 @@
+{
+  "name": "bundlwise_database",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "flyway -configFiles=flyway.conf migrate",
+    "rollback": "flyway -configFiles=flyway.conf undo", 
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bundlwise/bundlwise_database.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bundlwise/bundlwise_database/issues"
+  },
+  "homepage": "https://github.com/bundlwise/bundlwise_database#readme",
+  "description": "A project to manage database and its migrations with Flyway and deploy using Railway"
+}
