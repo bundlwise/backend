@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "flyway -configFiles=flyway.conf migrate",
-    "rollback": "flyway -configFiles=flyway.conf undo", 
+    "rollback": "flyway -configFiles=flyway.conf undo",
     "start": "node src/index.js"
   },
   "repository": {
@@ -19,5 +18,10 @@
     "url": "https://github.com/bundlwise/bundlwise_database/issues"
   },
   "homepage": "https://github.com/bundlwise/bundlwise_database#readme",
-  "description": "A project to manage database and its migrations with Flyway and deploy using Railway"
+  "description": "A project to manage database and its migrations with Flyway and deploy using Railway",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  }
 }
