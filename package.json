@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
-    "build": "tsc --project tsconfig.json && cp package.json dist/",
+    "build": "tsc --project tsconfig.json --noEmitOnError && cp package.json dist/",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prisma:generate": "prisma generate",

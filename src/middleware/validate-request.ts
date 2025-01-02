@@ -1,5 +1,5 @@
 import { Context, Next } from 'hono';
-import { ZodSchema } from 'zod';
+import { ZodSchema, ZodError } from 'zod';
 import { ApiError } from '../utils/api-error.js';
 
 interface ValidationConfig {
@@ -27,8 +27,8 @@ export function validateRequest(config: ValidationConfig) {
       }
 
       await next();
-    } catch (error) {
-      if (error.name === 'ZodError') {
+    } catch (error: unknown) {
+      if (error instanceof ZodError) {
         throw new ApiError('Validation failed', 400, error.errors);
       }
       throw error;

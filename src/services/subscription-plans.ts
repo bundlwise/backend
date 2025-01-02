@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { SubscriptionPlan } from '../schemas/subscription-plan';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { SubscriptionPlanInput } from '../models/schemas/subscription-plan.schema';
 import { ApiError } from '../utils/api-error';
 
 export class SubscriptionPlansService {
@@ -23,7 +23,7 @@ export class SubscriptionPlansService {
     });
   }
 
-  async createPlan(data: SubscriptionPlan) {
+  async createPlan(data: SubscriptionPlanInput) {
     return this.prisma.subscription_plans.create({
       data: {
         name: data.name,
@@ -37,14 +37,14 @@ export class SubscriptionPlansService {
     });
   }
 
-  async updatePlan(id: number, data: Partial<SubscriptionPlan>) {
+  async updatePlan(id: number, data: Partial<SubscriptionPlanInput>) {
     try {
       return await this.prisma.subscription_plans.update({
         where: { plan_id: id },
         data,
       });
     } catch (error) {
-      if (error.code === 'P2025') {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
         throw new ApiError('Plan not found', 404);
       }
       throw error;
@@ -56,8 +56,8 @@ export class SubscriptionPlansService {
       await this.prisma.subscription_plans.delete({
         where: { plan_id: id },
       });
-    } catch (error) {
-      if (error.code === 'P2025') {
+    } catch (error: unknown) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
         throw new ApiError('Plan not found', 404);
       }
       throw error;

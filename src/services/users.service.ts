@@ -78,15 +78,16 @@ export class UsersService {
   async updateUser(id: number, data: Partial<UserInput>) {
     try {
       const validatedData = userSchema.partial().parse(data);
+      const updateData: any = { ...validatedData };
 
       if (validatedData.password) {
-        validatedData.password_hash = await hashPassword(validatedData.password);
-        delete validatedData.password;
+        updateData.password_hash = await hashPassword(validatedData.password);
+        delete updateData.password;
       }
 
       const user = await this.prisma.users.update({
         where: { user_id: id },
-        data: validatedData,
+        data: updateData,
         select: {
           user_id: true,
           email: true,

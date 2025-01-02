@@ -15,12 +15,12 @@ export async function requestLogger(c: Context, next: Next) {
       status: c.res.status,
       duration: `${duration}ms`,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     const duration = Date.now() - start;
     logger.error({
       method,
       url,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Unknown error',
       duration: `${duration}ms`,
     });
     throw error;

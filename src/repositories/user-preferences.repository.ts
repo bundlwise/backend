@@ -6,7 +6,7 @@ import { UserPreferenceInput } from '../models/schemas/user-preference.schema';
 export class UserPreferencesRepository extends BaseRepository {
   async findByUserId(userId: number) {
     try {
-      return await this.prisma.user_preferences.findFirst({
+      return await this.prisma.user_preferences.findUnique({
         where: { user_id: userId },
       });
     } catch (error) {
@@ -17,9 +17,7 @@ export class UserPreferencesRepository extends BaseRepository {
   async createOrUpdate(userId: number, data: Partial<UserPreferenceInput>) {
     try {
       return await this.prisma.user_preferences.upsert({
-        where: {
-          user_id: userId,
-        },
+        where: { user_id: userId },
         update: {
           ...data,
           last_updated: new Date(),

@@ -34,27 +34,21 @@ export class UserPreferencesService {
     }
   }
 
-  async updatePreferences(userId: number, data: UserPreferenceInput) {
+  async createOrUpdate(userId: number, data: Partial<UserPreferenceInput>) {
     try {
-      const validatedData = userPreferenceSchema.parse(data);
-
-      const preferences = await this.prisma.user_preferences.upsert({
-        where: {
-          user_id: userId,
-        },
+      const validatedData = userPreferenceSchema.partial().parse(data);
+      return await this.prisma.user_preferences.upsert({
+        where: { user_id: userId },
         update: {
           ...validatedData,
           last_updated: new Date(),
         },
         create: {
-          user_id: userId,
           ...validatedData,
+          user_id: userId,
         },
       });
-
-      return preferences;
     } catch (error) {
-      if (error instanceof ApiError) throw error;
       throw new ApiError('Failed to update preferences', 500);
     }
   }

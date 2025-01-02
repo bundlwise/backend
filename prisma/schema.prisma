@@ -113,14 +113,15 @@ model payments {
 }
 
 model user_preferences {
-  preference_id        Int      @id @default(autoincrement())
-  user_id             Int
+  preference_id         Int      @id @default(autoincrement())
+  user_id              Int      
   genre_preferences    Json?    @db.JsonB
   language_preferences Json?    @db.JsonB
   watch_time_preferences Json?  @db.JsonB
   last_updated        DateTime @default(now())
+  user                users    @relation(fields: [user_id], references: [user_id])
 
-  user users @relation(fields: [user_id], references: [user_id])
+  @@unique([user_id])
 }
 
 model user_interests {

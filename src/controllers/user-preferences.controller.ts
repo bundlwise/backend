@@ -17,15 +17,15 @@ export class UserPreferencesController {
       return c.json({ success: true, data: preferences });
     } catch (error) {
       if (error instanceof ApiError) throw error;
-      throw new ApiError('Failed to fetch user preferences', 500);
+      throw new ApiError('Failed to fetch preferences', 500);
     }
   };
 
   updatePreferences = async (c: Context) => {
     try {
       const userId = Number(c.param('userId'));
-      const data = await c.req.json() as UserPreferenceInput;
-      const preferences = await this.service.updatePreferences(userId, data);
+      const data = await c.req.json();
+      const preferences = await this.service.createOrUpdate(userId, data);
       return c.json({ success: true, data: preferences });
     } catch (error) {
       if (error instanceof ApiError) throw error;

@@ -33,9 +33,8 @@ export async function authMiddleware(c: Context, next: Next) {
 
       // Add user to request context
       c.set('user', user);
-    } catch (jwtError) {
-      logger.warn({ error: jwtError, token }, 'JWT verification failed');
-      if (jwtError.name === 'TokenExpiredError') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name === 'TokenExpiredError') {
         throw new ApiError('Token expired', 401);
       }
       throw new ApiError('Invalid token', 401);

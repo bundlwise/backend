@@ -1,6 +1,9 @@
 import { Context, Next } from 'hono';
+import { HTTPException } from 'hono/http-exception';
 import { ApiError } from '../utils/api-error.js';
 import { logger } from '../utils/logger.js';
+
+type StatusCode = 200 | 201 | 400 | 401 | 403 | 404 | 409 | 429 | 500;
 
 export function errorHandler() {
   return async (c: Context, next: Next) => {
@@ -8,29 +11,22 @@ export function errorHandler() {
       await next();
     } catch (error) {
       if (error instanceof ApiError) {
-        // Log client errors only in development
-        if (process.env.NODE_ENV === 'development') {
-          logger.warn(error);
-        }
-        
         return c.json({
           success: false,
           error: {
             message: error.message,
             details: error.details,
           },
-        }, error.statusCode);
+        }, error.statusCode as StatusCode);
       }
 
-      // Log all server errors
       logger.error(error);
-      
       return c.json({
         success: false,
         error: {
           message: 'Internal server error',
         },
-      }, 500);
+      }, 500 as StatusCode);
     }
   };
 } 

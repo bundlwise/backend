@@ -27,7 +27,7 @@ export class SubscriptionsService {
       }
 
       // Get plan details
-      const plan = await this.prisma.subscriptionPlans.findUnique({
+      const plan = await this.prisma.subscription_plans.findUnique({
         where: { plan_id: validatedData.plan_id },
       });
 
