@@ -1,0 +1,181 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model content_metadata {
+  content_id          String   @id
+  title              String   @db.VarChar(255)
+  description        String?  @db.Text
+  genre              String?  @db.VarChar(100)
+  duration           Int
+  release_date       DateTime? @db.Date
+  language           String?  @db.VarChar(50)
+  is_premium         Boolean  @default(false)
+  region_availability String? @db.VarChar(255)
+  created_at         DateTime @default(now())
+  updated_at         DateTime @default(now()) @updatedAt
+
+  user_interests user_interests[]
+  watch_history  watch_history[]
+}
+
+model users {
+  user_id             Int       @id @default(autoincrement())
+  email               String    @db.VarChar(255)
+  password_hash       String    @db.VarChar(255)
+  first_name          String?   @db.VarChar(100)
+  last_name           String?   @db.VarChar(100)
+  phone_number        String?   @db.VarChar(15)
+  country             String?   @db.VarChar(50)
+  language_preference String?   @db.VarChar(50)
+  is_verified         Boolean   @default(false)
+  trial_end_date      DateTime? @db.Date
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @default(now()) @updatedAt
+
+  profiles             profiles[]
+  user_preferences     user_preferences[]
+  user_interests       user_interests[]
+  plan_recommendations plan_recommendations[]
+  user_notifications   user_notifications[]
+  audit_logs          audit_logs[]
+}
+
+model profiles {
+  profile_id          Int       @id @default(autoincrement())
+  user_id             Int
+  name                String    @db.VarChar(100)
+  avatar_url          String?   @db.VarChar(255)
+  is_kids_profile     Boolean   @default(false)
+  language_preference String?   @db.VarChar(50)
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @default(now()) @updatedAt
+
+  user           users            @relation(fields: [user_id], references: [user_id])
+  watch_history  watch_history[]
+}
+
+model subscription_plans {
+  plan_id             Int      @id @default(autoincrement())
+  name                String   @db.VarChar(100)
+  description         String?  @db.Text
+  price               Decimal  @db.Decimal(10, 2)
+  duration_days       Int
+  is_trial_available  Boolean  @default(false)
+  max_profiles        Int      @default(1)
+  region_availability String?  @db.VarChar(255)
+  created_at          DateTime @default(now())
+  updated_at          DateTime @default(now()) @updatedAt
+
+  subscriptions        subscriptions[]
+  plan_recommendations plan_recommendations[]
+}
+
+model subscriptions {
+  subscription_id Int       @id @default(autoincrement())
+  user_id        Int
+  plan_id        Int
+  start_date     DateTime  @db.Date
+  end_date       DateTime  @db.Date
+  is_active      Boolean   @default(true)
+  is_trial       Boolean   @default(false)
+  renewal_date   DateTime? @db.Date
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now()) @updatedAt
+
+  plan     subscription_plans @relation(fields: [plan_id], references: [plan_id])
+  payments payments[]
+}
+
+model payments {
+  payment_id      Int      @id @default(autoincrement())
+  user_id        Int
+  subscription_id Int
+  amount         Decimal  @db.Decimal(10, 2)
+  payment_method String   @db.VarChar(50)
+  payment_status String   @db.VarChar(50)
+  transaction_id String   @db.VarChar(255)
+  region         String?  @db.VarChar(50)
+  created_at     DateTime @default(now())
+
+  subscription subscriptions @relation(fields: [subscription_id], references: [subscription_id])
+}
+
+model user_preferences {
+  preference_id        Int      @id @default(autoincrement())
+  user_id             Int
+  genre_preferences    Json?    @db.JsonB
+  language_preferences Json?    @db.JsonB
+  watch_time_preferences Json?  @db.JsonB
+  last_updated        DateTime @default(now())
+
+  user users @relation(fields: [user_id], references: [user_id])
+}
+
+model user_interests {
+  interest_id  Int      @id @default(autoincrement())
+  user_id      Int
+  content_id   String
+  interest_level Int
+  updated_at   DateTime @default(now())
+
+  user    users            @relation(fields: [user_id], references: [user_id])
+  content content_metadata @relation(fields: [content_id], references: [content_id])
+}
+
+model plan_recommendations {
+  recommendation_id   Int      @id @default(autoincrement())
+  user_id            Int
+  recommended_plan_id Int
+  reason             String?  @db.Text
+  created_at         DateTime @default(now())
+
+  user users              @relation(fields: [user_id], references: [user_id])
+  plan subscription_plans @relation(fields: [recommended_plan_id], references: [plan_id])
+}
+
+model watch_history {
+  history_id  Int      @id @default(autoincrement())
+  profile_id  Int
+  content_id  String
+  watch_time  Int
+  completed   Boolean  @default(false)
+  watched_at  DateTime @default(now())
+
+  profile profiles         @relation(fields: [profile_id], references: [profile_id])
+  content content_metadata @relation(fields: [content_id], references: [content_id])
+}
+
+model user_notifications {
+  notification_id   Int      @id @default(autoincrement())
+  user_id          Int
+  title            String   @db.VarChar(255)
+  message          String   @db.Text
+  is_read          Boolean  @default(false)
+  notification_type String? @db.VarChar(50)
+  created_at       DateTime @default(now())
+
+  user users @relation(fields: [user_id], references: [user_id])
+}
+
+model audit_logs {
+  log_id         Int      @id @default(autoincrement())
+  user_id        Int
+  action         String   @db.VarChar(255)
+  action_details Json?    @db.JsonB
+  ip_address     String?  @db.VarChar(50)
+  created_at     DateTime @default(now())
+
+  user users @relation(fields: [user_id], references: [user_id])
+}
