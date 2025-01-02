@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "migrate": "flyway -configFiles=flyway.conf migrate",
-    "rollback": "flyway -configFiles=flyway.conf undo",
     "start": "node src/index.js"
   },
   "repository": {
