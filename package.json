@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "prisma": "prisma",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate",
+    "studio": "prisma studio",
+    "seed": "node prisma/seed.js"
   },
   "repository": {
     "type": "git",
@@ -18,8 +25,22 @@
   "homepage": "https://github.com/bundlwise/bundlwise_database#readme",
   "description": "A project to manage database and its migrations with Flyway and deploy using Railway",
   "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "pg": "^8.13.1"
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "nvm": "^0.0.4",
+    "pg": "^8.13.1",
+    "prisma": "^6.1.0",
+    "use": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.3",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }
