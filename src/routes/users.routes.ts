@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
-import { UsersController } from '../controllers/users.controller';
-import { validateRequest } from '../middleware/validate-request';
-import { userSchema } from '../models/schemas/user.schema';
+import { UsersController } from '../controllers/users.controller.js';
+import { validateRequest } from '../middleware/validate-request.js';
+import { userSchema } from '../models/schemas/user.schema.js';
 
 const router = new Hono();
 const controller = new UsersController();

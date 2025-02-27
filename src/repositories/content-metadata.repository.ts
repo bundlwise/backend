@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { BaseRepository } from './base.repository';
-import { ApiError } from '../utils/api-error';
-import { ContentMetadataInput } from '../models/schemas/content-metadata.schema';
+import { BaseRepository } from './base.repository.js';
+import { ApiError } from '../utils/api-error.js';
+import { ContentMetadataInput } from '../models/schemas/content-metadata.schema.js';
 
 interface ContentFilters {
   genre?: string;

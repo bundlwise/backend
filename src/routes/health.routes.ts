@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 import { PrismaClient } from '@prisma/client';
-import { logger } from '../utils/logger.js';
+import logger from '../utils/logger.js';
 
 const router = new Hono();
 const prisma = new PrismaClient();

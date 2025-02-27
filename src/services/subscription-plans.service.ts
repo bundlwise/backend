@@ -1,7 +1,7 @@
-import { ApiError } from '../utils/api-error';
-import { SubscriptionPlanInput } from '../models/schemas/subscription-plan.schema';
-import { subscriptionPlanSchema } from '../models/schemas/subscription-plan.schema';
-import { SubscriptionPlansRepository } from '../repositories/subscription-plans.repository';
+import { ApiError } from '../utils/api-error.js';
+import { SubscriptionPlanInput } from '../models/schemas/subscription-plan.schema.js';
+import { subscriptionPlanSchema } from '../models/schemas/subscription-plan.schema.js';
+import { SubscriptionPlansRepository } from '../repositories/subscription-plans.repository.js';
 
 export class SubscriptionPlansService {
   private repository: SubscriptionPlansRepository;

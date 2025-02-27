@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { ApiError } from '../utils/api-error';
-import { UserPreferenceInput } from '../models/schemas/user-preference.schema';
-import { userPreferenceSchema } from '../models/schemas/user-preference.schema';
+import { ApiError } from '../utils/api-error.js';
+import { UserPreferenceInput } from '../models/schemas/user-preference.schema.js';
+import { userPreferenceSchema } from '../models/schemas/user-preference.schema.js';
 
 export class UserPreferencesService {
   private prisma: PrismaClient;

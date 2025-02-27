@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { BaseRepository } from './base.repository';
-import { ApiError } from '../utils/api-error';
-import { PaymentInput } from '../models/schemas/payment.schema';
+import { BaseRepository } from './base.repository.js';
+import { ApiError } from '../utils/api-error.js';
+import { PaymentInput } from '../models/schemas/payment.schema.js';
 
 export class PaymentsRepository extends BaseRepository {
   async findById(id: number) {

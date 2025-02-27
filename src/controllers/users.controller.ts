@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { UsersService } from '../services/users.service';
-import { ApiError } from '../utils/api-error';
-import { UserInput } from '../models/schemas/user.schema';
+import { UsersService } from '../services/users.service.js';
+import { ApiError } from '../utils/api-error.js';
+import { UserInput } from '../models/schemas/user.schema.js';
 
 export class UsersController {
   private service: UsersService;

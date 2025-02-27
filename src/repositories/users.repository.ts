@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { BaseRepository } from './base.repository';
-import { ApiError } from '../utils/api-error';
-import { UserInput } from '../models/schemas/user.schema';
+import { BaseRepository } from './base.repository.js';
+import { ApiError } from '../utils/api-error.js';
+import { UserInput } from '../models/schemas/user.schema.js';
 
 export class UsersRepository extends BaseRepository {
   async findByEmail(email: string) {

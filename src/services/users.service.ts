@@ -1,8 +1,8 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { ApiError } from '../utils/api-error';
-import { UserInput } from '../models/schemas/user.schema';
-import { userSchema } from '../models/schemas/user.schema';
-import { hashPassword } from '../utils/auth';
+import { ApiError } from '../utils/api-error.js';
+import { UserInput } from '../models/schemas/user.schema.js';
+import { userSchema } from '../models/schemas/user.schema.js';
+import { hashPassword } from '../utils/auth.js';
 
 export class UsersService {
   private prisma: PrismaClient;

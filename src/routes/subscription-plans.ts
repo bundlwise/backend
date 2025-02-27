@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
-import { SubscriptionPlansController } from '../controllers/subscription-plans';
-import { validateRequest } from '../middleware/validate-request';
-import { subscriptionPlanSchema } from '../models/schemas/subscription-plan.schema';
+import { SubscriptionPlansController } from '../controllers/subscription-plans.js';
+import { validateRequest } from '../middleware/validate-request.js';
+import { subscriptionPlanSchema } from '../models/schemas/subscription-plan.schema.js';
 
 const router = new Hono();
 const controller = new SubscriptionPlansController();

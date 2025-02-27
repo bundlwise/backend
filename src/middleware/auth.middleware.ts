@@ -3,7 +3,7 @@ import { Context, Next } from 'hono';
 import { ApiError } from '../utils/api-error.js';
 import { config } from '../config/index.js';
 import { UsersRepository } from '../repositories/users.repository.js';
-import { logger } from '../utils/logger.js';
+import logger from '../utils/logger.js';
 
 interface JwtPayload {
   userId: number;

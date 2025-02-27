@@ -1,14 +1,14 @@
-import pino from 'pino';
-import { config } from '../config';
+import { pino } from 'pino';
+import { config } from '../config/index.js';
 
-export const logger = pino({
-  level: config.logging.level,
+const logger = pino({
+  level: config.logging?.level || 'info',
   transport: {
     target: 'pino-pretty',
     options: {
-      colorize: true,
-      ignore: 'pid,hostname',
-      translateTime: 'SYS:standard',
-    },
-  },
-}); 
+      colorize: true
+    }
+  }
+});
+
+export default logger; 

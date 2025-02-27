@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { ContentMetadataService } from '../services/content-metadata.service';
-import { ApiError } from '../utils/api-error';
-import { ContentMetadataInput } from '../models/schemas/content-metadata.schema';
+import { ContentMetadataService } from '../services/content-metadata.service.js';
+import { ApiError } from '../utils/api-error.js';
+import { ContentMetadataInput } from '../models/schemas/content-metadata.schema.js';
 
 type HonoContext = Context<{
   Bindings: {};

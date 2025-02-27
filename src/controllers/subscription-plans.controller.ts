@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { SubscriptionPlansService } from '../services/subscription-plans.service';
-import { ApiError } from '../utils/api-error';
-import { SubscriptionPlanInput } from '../models/schemas/subscription-plan.schema';
+import { SubscriptionPlansService } from '../services/subscription-plans.service.js';
+import { ApiError } from '../utils/api-error.js';
+import { SubscriptionPlanInput } from '../models/schemas/subscription-plan.schema.js';
 
 export class SubscriptionPlansController {
   private service: SubscriptionPlansService;

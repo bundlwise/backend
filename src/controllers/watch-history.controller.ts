@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { WatchHistoryService } from '../services/watch-history.service';
-import { ApiError } from '../utils/api-error';
-import { WatchHistoryInput } from '../models/schemas/watch-history.schema';
+import { WatchHistoryService } from '../services/watch-history.service.js';
+import { ApiError } from '../utils/api-error.js';
+import { WatchHistoryInput } from '../models/schemas/watch-history.schema.js';
 
 type HonoContext = Context<{
   Bindings: {};

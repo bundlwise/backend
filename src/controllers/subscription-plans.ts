@@ -1,6 +1,6 @@
 import { Context } from 'hono';
-import { SubscriptionPlansService } from '../services/subscription-plans';
-import { ApiError } from '../utils/api-error';
+import { SubscriptionPlansService } from '../services/subscription-plans.js';
+import { ApiError } from '../utils/api-error.js';
 
 export class SubscriptionPlansController {
   private service: SubscriptionPlansService;

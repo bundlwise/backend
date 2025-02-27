@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { BaseRepository } from './base.repository';
-import { ApiError } from '../utils/api-error';
-import { SubscriptionInput } from '../models/schemas/subscription.schema';
+import { BaseRepository } from './base.repository.js';
+import { ApiError } from '../utils/api-error.js';
+import { SubscriptionInput } from '../models/schemas/subscription.schema.js';
 
 export class SubscriptionsRepository extends BaseRepository {
   async findActiveByUserId(userId: number) {

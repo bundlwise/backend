@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
-import { PaymentsController } from '../controllers/payments.controller';
-import { validateRequest } from '../middleware/validate-request';
-import { paymentSchema } from '../models/schemas/payment.schema';
+import { PaymentsController } from '../controllers/payments.controller.js';
+import { validateRequest } from '../middleware/validate-request.js';
+import { paymentSchema } from '../models/schemas/payment.schema.js';
 
 const router = new Hono();
 const controller = new PaymentsController();

@@ -1,7 +1,7 @@
 import { Context, Next } from 'hono';
 import { HTTPException } from 'hono/http-exception';
 import { ApiError } from '../utils/api-error.js';
-import { logger } from '../utils/logger.js';
+import logger from '../utils/logger.js';
 
 type StatusCode = 200 | 201 | 400 | 401 | 403 | 404 | 409 | 429 | 500;
 

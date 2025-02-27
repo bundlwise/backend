@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { ApiError } from '../utils/api-error';
-import { WatchHistoryInput } from '../models/schemas/watch-history.schema';
-import { watchHistorySchema } from '../models/schemas/watch-history.schema';
+import { ApiError } from '../utils/api-error.js';
+import { WatchHistoryInput } from '../models/schemas/watch-history.schema.js';
+import { watchHistorySchema } from '../models/schemas/watch-history.schema.js';
 
 export class WatchHistoryService {
   private prisma: PrismaClient;

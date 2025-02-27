@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { BaseRepository } from './base.repository';
-import { ApiError } from '../utils/api-error';
-import { WatchHistoryInput } from '../models/schemas/watch-history.schema';
+import { BaseRepository } from './base.repository.js';
+import { ApiError } from '../utils/api-error.js';
+import { WatchHistoryInput } from '../models/schemas/watch-history.schema.js';
 
 export class WatchHistoryRepository extends BaseRepository {
   async findByProfileAndContent(profileId: number, contentId: string) {

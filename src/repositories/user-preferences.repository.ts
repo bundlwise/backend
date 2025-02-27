@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
-import { BaseRepository } from './base.repository';
-import { ApiError } from '../utils/api-error';
-import { UserPreferenceInput } from '../models/schemas/user-preference.schema';
+import { BaseRepository } from './base.repository.js';
+import { ApiError } from '../utils/api-error.js';
+import { UserPreferenceInput } from '../models/schemas/user-preference.schema.js';
 
 export class UserPreferencesRepository extends BaseRepository {
   async findByUserId(userId: number) {

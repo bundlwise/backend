@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { UserPreferencesService } from '../services/user-preferences.service';
-import { ApiError } from '../utils/api-error';
-import { UserPreferenceInput } from '../models/schemas/user-preference.schema';
+import { UserPreferencesService } from '../services/user-preferences.service.js';
+import { ApiError } from '../utils/api-error.js';
+import { UserPreferenceInput } from '../models/schemas/user-preference.schema.js';
 
 export class UserPreferencesController {
   private service: UserPreferencesService;

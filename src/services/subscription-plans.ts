@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { SubscriptionPlanInput } from '../models/schemas/subscription-plan.schema';
-import { ApiError } from '../utils/api-error';
+import { SubscriptionPlanInput } from '../models/schemas/subscription-plan.schema.js';
+import { ApiError } from '../utils/api-error.js';
 
 export class SubscriptionPlansService {
   private prisma: PrismaClient;

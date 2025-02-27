@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
-import { WatchHistoryController } from '../controllers/watch-history.controller';
-import { validateRequest } from '../middleware/validate-request';
-import { watchHistorySchema } from '../models/schemas/watch-history.schema';
+import { WatchHistoryController } from '../controllers/watch-history.controller.js';
+import { validateRequest } from '../middleware/validate-request.js';
+import { watchHistorySchema } from '../models/schemas/watch-history.schema.js';
 
 const router = new Hono();
 const controller = new WatchHistoryController();

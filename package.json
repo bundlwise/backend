@@ -14,7 +14,9 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate",
-    "kill-port": "kill-port 3000 || true"
+    "kill-port": "kill-port 3000 || true",
+    "studio": "prisma studio",
+    "studio:prod": "DATABASE_URL=\"$DATABASE_URL\" prisma studio"
   },
   "keywords": [],
   "author": "",

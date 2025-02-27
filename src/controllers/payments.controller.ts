@@ -1,7 +1,7 @@
 import { Context } from 'hono';
-import { PaymentsService } from '../services/payments.service';
-import { ApiError } from '../utils/api-error';
-import { PaymentInput } from '../models/schemas/payment.schema';
+import { PaymentsService } from '../services/payments.service.js';
+import { ApiError } from '../utils/api-error.js';
+import { PaymentInput } from '../models/schemas/payment.schema.js';
 
 export class PaymentsController {
   private service: PaymentsService;

@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { ApiError } from '../utils/api-error';
-import { PaymentInput } from '../models/schemas/payment.schema';
-import { paymentSchema } from '../models/schemas/payment.schema';
+import { ApiError } from '../utils/api-error.js';
+import { PaymentInput } from '../models/schemas/payment.schema.js';
+import { paymentSchema } from '../models/schemas/payment.schema.js';
 
 export class PaymentsService {
   private prisma: PrismaClient;

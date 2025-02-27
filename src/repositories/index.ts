@@ -1,9 +1,9 @@
-export * from './base.repository';
-export * from './subscription-plans.repository';
-export * from './users.repository';
-export * from './subscriptions.repository';
-export * from './payments.repository';
-export * from './user-preferences.repository';
-export * from './content-metadata.repository';
-export * from './watch-history.repository';
+export * from './base.repository.js';
+export * from './subscription-plans.repository.js';
+export * from './users.repository.js';
+export * from './subscriptions.repository.js';
+export * from './payments.repository.js';
+export * from './user-preferences.repository.js';
+export * from './content-metadata.repository.js';
+export * from './watch-history.repository.js';
 // Export other repositories as they are created 
