@@ -20,12 +20,12 @@ async function main() {
       prisma.content_metadata.deleteMany(),
     ]);
 
-    // Create subscription plans
+    // Create subscription plans with realistic details
     const basicPlan = await prisma.subscription_plans.create({
       data: {
         name: 'Basic Plan',
-        description: 'Watch on one screen at a time in HD',
-        price: 8.99,
+        description: 'Stream on one device in HD quality.',
+        price: 9.99,
         duration_days: 30,
         is_trial_available: true,
         max_profiles: 1,
@@ -36,8 +36,8 @@ async function main() {
     const standardPlan = await prisma.subscription_plans.create({
       data: {
         name: 'Standard Plan',
-        description: 'Watch on two screens at a time in Full HD',
-        price: 13.99,
+        description: 'Enjoy on two devices simultaneously in Full HD.',
+        price: 14.99,
         duration_days: 30,
         is_trial_available: true,
         max_profiles: 2,
@@ -45,14 +45,14 @@ async function main() {
       },
     });
 
-    // Create test user
-    const passwordHash = await hash('password123', 10);
+    // Create a genuine user with realistic details
+    const passwordHash = await hash('SecureP@ssw0rd!', 10);
     const user = await prisma.users.create({
       data: {
-        email: 'test@example.com',
+        email: 'jane.doe@example.com',
         password_hash: passwordHash,
-        first_name: 'Test',
-        last_name: 'User',
+        first_name: 'Jane',
+        last_name: 'Doe',
         is_verified: true,
         country: 'US',
         language_preference: 'en',
@@ -63,30 +63,30 @@ async function main() {
     const profile = await prisma.profiles.create({
       data: {
         user_id: user.user_id,
-        name: 'Main Profile',
+        name: "Jane's Profile",
         language_preference: 'en',
       },
     });
 
-    // Create content
+    // Create content with realistic movie data
     const movies = [
       {
-        content_id: 'movie1',
-        title: 'The Adventure Begins',
-        description: 'An epic journey through time and space',
-        genre: 'Adventure',
-        duration: 7200, // 2 hours in seconds
-        release_date: new Date('2023-01-01'),
+        content_id: 'mv_001',
+        title: 'Lost Horizons',
+        description: 'An evocative journey through the landscapes of memory and dreams.',
+        genre: 'Drama',
+        duration: 7500, // approx 2 hours 5 minutes
+        release_date: new Date('2022-11-10'),
         language: 'en',
         is_premium: false,
       },
       {
-        content_id: 'movie2',
-        title: 'Mystery of the Deep',
-        description: 'Underwater thriller that will keep you on the edge',
+        content_id: 'mv_002',
+        title: 'City of Echoes',
+        description: 'A thrilling dive into the secrets hidden within a sprawling metropolis.',
         genre: 'Thriller',
-        duration: 6300, // 1:45 hours in seconds
-        release_date: new Date('2023-02-15'),
+        duration: 6800, // approx 1 hour 53 minutes
+        release_date: new Date('2023-03-20'),
         language: 'en',
         is_premium: true,
       },
@@ -96,7 +96,7 @@ async function main() {
       await prisma.content_metadata.create({ data: movie });
     }
 
-    // Create subscription
+    // Create a subscription for the user
     const subscription = await prisma.subscriptions.create({
       data: {
         user_id: user.user_id,
@@ -108,7 +108,7 @@ async function main() {
       },
     });
 
-    // Create payment
+    // Record a payment for the subscription
     await prisma.payments.create({
       data: {
         user_id: user.user_id,
@@ -116,34 +116,34 @@ async function main() {
         amount: standardPlan.price,
         payment_method: 'CREDIT_CARD',
         payment_status: 'COMPLETED',
-        transaction_id: 'txn_test_123',
+        transaction_id: 'txn_987654321',
         region: 'US',
       },
     });
 
-    // Create watch history
+    // Log watch history for the user
     await prisma.watch_history.create({
       data: {
         profile_id: profile.profile_id,
         content_id: movies[0].content_id,
-        watch_time: 3600, // 1 hour in seconds
+        watch_time: 4200, // e.g., 70 minutes watched
         completed: false,
       },
     });
 
-    // Create user preferences
+    // Set realistic user preferences
     await prisma.user_preferences.create({
       data: {
         user_id: user.user_id,
-        genre_preferences: { favorites: ['Adventure', 'Thriller'] },
+        genre_preferences: { favorites: ['Drama', 'Thriller'] },
         language_preferences: { preferred: ['en'] },
         watch_time_preferences: { preferred_time: 'evening' },
       },
     });
 
-    console.log('Seed data created successfully');
+    console.log('Genuine seed data created successfully');
   } catch (error) {
-    console.error('Error seeding data:', error);
+    console.error('Error seeding genuine data:', error);
     throw error;
   } finally {
     await prisma.$disconnect();
@@ -154,4 +154,4 @@ main()
   .catch((error) => {
     console.error(error);
     process.exit(1);
-  }); 
+  });
