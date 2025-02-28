@@ -60,4 +60,5 @@ jobs:
             --image "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$SERVICE/app:${{ github.sha }}" \
             --region $REGION \
             --platform managed \
+            --service-account arpit16@bundlwise16.iam.gserviceaccount.com \
             --allow-unauthenticated 
