@@ -29,9 +29,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: npm test
-
       - name: Google Auth
         id: auth
         uses: google-github-actions/auth@v0

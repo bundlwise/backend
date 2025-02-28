@@ -131,11 +131,11 @@ npm run type-check
 
 ### Testing
 ```bash
-# Run tests
-npm test
+# Run tests (currently disabled)
+# npm test
 
-# Test specific file
-npm test -- users.test.ts
+# Test specific file (currently disabled)
+# npm test -- users.test.ts
 ```
 
 ## API Documentation 📝
