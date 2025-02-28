@@ -1,46 +1,50 @@
 {
-  "name": "bundlwise_database",
+  "name": "my-hono-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "A Hono-based app using TypeScript",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-  "dev": "nodemon src/index.ts",
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "prisma": "prisma",
-  "migrate": "prisma migrate deploy",
-  "generate": "prisma generate",
-  "studio": "prisma studio",
-  "seed": "node prisma/seed.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bundlwise/bundlwise_database.git"
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc --project tsconfig.json --noEmitOnError && cp package.json dist/",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:seed": "tsx prisma/seed.ts",
+    "postinstall": "prisma generate",
+    "kill-port": "kill-port 3000 || true",
+    "studio": "prisma studio",
+    "studio:prod": "DATABASE_URL=\"$DATABASE_URL\" prisma studio"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bundlwise/bundlwise_database/issues"
-  },
-  "homepage": "https://github.com/bundlwise/bundlwise_database#readme",
-  "description": "A project to manage database and its migrations with Flyway and deploy using Railway",
+  "license": "MIT",
   "dependencies": {
+    "@hono/node-server": "^1.13.7",
     "@prisma/client": "^6.1.0",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "joi": "^17.13.3",
+    "hono": "^4.x.x",
     "jsonwebtoken": "^9.0.2",
-    "nvm": "^0.0.4",
-    "pg": "^8.13.1",
-    "prisma": "^6.1.0",
-    "use": "^3.1.1"
+    "pino": "^8.21.0",
+    "pino-pretty": "^10.3.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.10.3",
-    "nodemon": "^3.1.9",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^20.17.19",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prisma": "^6.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
