@@ -252,6 +252,21 @@ npm start
 - Verify PostgreSQL connection
 - Review environment variables
 
+## Artifact Repository Setup
+
+If you're deploying to Google Cloud Run and using Artifact Registry, you'll need to create a Docker repository in your Google Cloud project (bundlwise16). You can create a repository by running the following command in Cloud Shell (or any terminal where the Google Cloud SDK is installed):
+
+```bash
+gcloud services enable artifactregistry.googleapis.com
+
+gcloud artifacts repositories create bundlwise-backend \
+  --repository-format=docker \
+  --location=asia-south1 \
+  --description="Docker repository for bundlwise-backend"
+```
+
+This will set up the repository in the specified region so your Docker images can be pushed successfully.
+
 ---
 
 Last Updated: [Current Date]
