@@ -1,16 +1,17 @@
+0160
 name: Deploy to Production
 
 # Only trigger on push to main/prod branch
 on:
   push:
     branches:
-      - main
-      - prod
+      - prod  # Sirf prod branch pe push hone par chalega
 
 env:
-  PROJECT_ID: your-project-id # TODO: Replace with your Google Cloud project ID
-  REGION: us-central1        # TODO: Replace with your preferred region
-  SERVICE_NAME: bundlwise-backend  # TODO: Replace with your service name
+  PROJECT_ID: bundlwise16           # Update project ID
+  GAR_LOCATION: asia-south1      # Container registry location
+  SERVICE: bundlwise-backend     # Service name for backend
+  REGION: asia-south1           # Region
 
 jobs:
   deploy:
@@ -18,37 +19,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      # Setup Google Cloud CLI
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
-          project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
+          node-version: '18'
 
-      # Configure Docker to use Google Cloud
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
       - name: Configure Docker
-        run: gcloud auth configure-docker
+        run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
 
-      # Build the Docker image
-      - name: Build Docker image
-        run: |
-          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
+      - name: Build and Push Container
+        run: |-
+          docker build -t "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$SERVICE:${{ github.sha }}" .
+          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$SERVICE:${{ github.sha }}"
 
-      # Push the Docker image to Google Container Registry
-      - name: Push Docker image
-        run: |
-          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
-
-      # Deploy to Cloud Run
       - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy ${{ env.SERVICE_NAME }} \
-            --image gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }} \
-            --region ${{ env.REGION }} \
+        run: |-
+          gcloud run deploy $SERVICE \
+            --image "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$SERVICE:${{ github.sha }}" \
+            --region $REGION \
             --platform managed \
-            --allow-unauthenticated \
-            --set-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }}" 
+            --allow-unauthenticated 

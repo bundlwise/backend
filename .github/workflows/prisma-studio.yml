@@ -1,4 +1,6 @@
 name: Prisma Studio
+env:
+  PROJECT_ID: bundlwise16
 
 on:
   workflow_dispatch:
