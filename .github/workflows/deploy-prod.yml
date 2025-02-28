@@ -57,7 +57,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |-
           gcloud run deploy $SERVICE \
-            --image "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$SERVICE:${{ github.sha }}" \
+            --image "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$SERVICE/app:${{ github.sha }}" \
             --region $REGION \
             --platform managed \
             --allow-unauthenticated 
