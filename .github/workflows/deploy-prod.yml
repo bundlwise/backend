@@ -58,8 +58,18 @@ jobs:
       - name: Start Cloud SQL Auth Proxy
         run: |
           ./cloud-sql-proxy ${{ secrets.INSTANCE_CONNECTION_NAME }} --address 127.0.0.1 --port 5432 &
+          sleep 5  # Wait to ensure the proxy starts
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+      # ✅ Verify if Cloud SQL Proxy is running
+      - name: Check if port 5432 is open
+        run: |
+          if nc -zv 127.0.0.1 5432; then
+            echo "Cloud SQL Proxy is running."
+          else
+            echo "Cloud SQL Proxy failed to start." && exit 1
+          fi
 
       # ✅ Debug the DATABASE_URL (optional - remove later)
       - name: Debug DATABASE_URL
