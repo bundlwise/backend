@@ -57,8 +57,8 @@ jobs:
       # 🆕 Start Cloud SQL Auth Proxy in the background
       - name: Start Cloud SQL Auth Proxy
         run: |
-          ./cloud-sql-proxy -instances=${{ secrets.INSTANCE_CONNECTION_NAME }}=tcp:5432 &
-          sleep 5  # Wait to ensure the proxy fully starts
+          ./cloud-sql-proxy ${{ secrets.INSTANCE_CONNECTION_NAME }}=tcp:5432 &
+          sleep 15  # Wait to ensure the proxy fully starts
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
