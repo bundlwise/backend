@@ -57,9 +57,24 @@ jobs:
       # 🆕 Start Cloud SQL Auth Proxy in the background
       - name: Start Cloud SQL Auth Proxy
         run: |
-          ./cloud-sql-proxy ${{ secrets.INSTANCE_CONNECTION_NAME }} --address 34.100.245.217 --port 5432 &
+          ./cloud-sql-proxy ${{ secrets.INSTANCE_CONNECTION_NAME }} --address 127.0.0.1 --port 5432 &
+          sleep 15  # Initial wait to let the proxy start
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+      # ✅ Verify Cloud SQL Auth Proxy is running
+      - name: Verify Cloud SQL Auth Proxy
+        run: |
+          for i in {1..10}; do
+            if nc -zv 127.0.0.1 5432; then
+              echo "Cloud SQL Auth Proxy is up."
+              exit 0
+            else
+              echo "Waiting for Cloud SQL Auth Proxy to be ready..."
+              sleep 5
+            fi
+          done
+          echo "Cloud SQL Auth Proxy did not start in time." && exit 1
 
       # ✅ Run Prisma Migrations with DATABASE_URL forced inline
       - name: Run Prisma Migrations
