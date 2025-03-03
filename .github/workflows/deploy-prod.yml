@@ -48,6 +48,11 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
           install_components: 'beta'
 
+      # Write credentials to file for Cloud SQL Auth Proxy
+      - name: Set up credentials file
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" > $HOME/gcloud.json
+
       # 🆕 Download Cloud SQL Auth Proxy
       - name: Download Cloud SQL Auth Proxy
         run: |
@@ -57,10 +62,8 @@ jobs:
       # 🆕 Start Cloud SQL Auth Proxy in the background
       - name: Start Cloud SQL Auth Proxy
         run: |
-          ./cloud-sql-proxy ${{ secrets.INSTANCE_CONNECTION_NAME }}=tcp:5432 &
+          ./cloud-sql-proxy --credentials-file=$HOME/gcloud.json ${{ secrets.INSTANCE_CONNECTION_NAME }}=tcp:5432 &
           sleep 15  # Wait to ensure the proxy fully starts
-        env:
-          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
       # ✅ Verify Cloud SQL Proxy health
       - name: Check if Cloud SQL Proxy is running
