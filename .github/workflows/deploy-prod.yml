@@ -65,7 +65,7 @@ jobs:
       - name: Run Prisma Migrations
         run: npx prisma migrate deploy
         env:
-          DATABASE_URL: "postgresql://postgres:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/YOUR_DATABASE_NAME?schema=public"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Configure Docker
         run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
