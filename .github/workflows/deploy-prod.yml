@@ -65,6 +65,10 @@ jobs:
       - name: Run Prisma Migrations
         run: DATABASE_URL="${{ secrets.DATABASE_URL }}" npx prisma migrate deploy
 
+      # ✅ Regenerate Prisma Client with correct DATABASE_URL
+      - name: Generate Prisma Client
+        run: DATABASE_URL="${{ secrets.DATABASE_URL }}" npx prisma generate
+
       - name: Configure Docker
         run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
 
