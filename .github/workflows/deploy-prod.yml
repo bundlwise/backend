@@ -1,16 +1,15 @@
 name: Deploy to Production
 
-# Only trigger on push to main/prod branch
 on:
   push:
     branches:
-      - prod  # Sirf prod branch pe push hone par chalega
+      - prod  # Runs only on prod branch
 
 env:
-  PROJECT_ID: bundlwise16           # Update project ID
-  GAR_LOCATION: asia-south1      # Container registry location
-  SERVICE: bundlwise-backend     # Service name for backend
-  REGION: asia-south1           # Region
+  PROJECT_ID: bundlwise16           # Your GCP Project ID
+  GAR_LOCATION: asia-south1         # Container registry location
+  SERVICE: bundlwise-backend        # Cloud Run service name
+  REGION: asia-south1               # Deployment region
 
 jobs:
   deploy:
@@ -45,6 +44,15 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          install_components: 'beta'
+
+      # 🆕 Apply Prisma schema migrations to GCP PostgreSQL
+      - name: Run Prisma Migrations
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Configure Docker
         run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
@@ -61,4 +69,4 @@ jobs:
             --region $REGION \
             --platform managed \
             --service-account arpit16@bundlwise16.iam.gserviceaccount.com \
-            --allow-unauthenticated 
+            --allow-unauthenticated
