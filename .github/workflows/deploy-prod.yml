@@ -61,6 +61,10 @@ jobs:
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
+      # ✅ Debug the DATABASE_URL (optional - remove later)
+      - name: Debug DATABASE_URL
+        run: echo "${{ secrets.DATABASE_URL }}"
+
       # ✅ Run Prisma Migrations with DATABASE_URL forced inline
       - name: Run Prisma Migrations
         run: DATABASE_URL="${{ secrets.DATABASE_URL }}" npx prisma migrate deploy
