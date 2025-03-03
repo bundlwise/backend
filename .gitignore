@@ -55,3 +55,6 @@ prisma/migrations/*/
 
 # Yarn Integrity file
 .yarn-integrity
+
+# Cloud SQL Proxy
+cloud-sql-proxy
