@@ -10,6 +10,7 @@ env:
   GAR_LOCATION: asia-south1         # Container registry location
   SERVICE: bundlwise-backend        # Cloud Run service name
   REGION: asia-south1               # Deployment region
+  DATABASE_URL: ${{ secrets.DATABASE_URL }} # PostgreSQL connection string
 
 jobs:
   deploy:
