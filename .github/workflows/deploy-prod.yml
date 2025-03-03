@@ -10,7 +10,6 @@ env:
   GAR_LOCATION: asia-south1         # Container registry location
   SERVICE: bundlwise-backend        # Cloud Run service name
   REGION: asia-south1               # Deployment region
-  DATABASE_URL: ${{ secrets.DATABASE_URL }} # PostgreSQL connection string
 
 jobs:
   deploy:
@@ -49,11 +48,24 @@ jobs:
           project_id: ${{ env.PROJECT_ID }}
           install_components: 'beta'
 
-      # 🆕 Apply Prisma schema migrations to GCP PostgreSQL
+      # 🆕 Download Cloud SQL Auth Proxy
+      - name: Download Cloud SQL Auth Proxy
+        run: |
+          wget https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.10.1/cloud-sql-proxy.linux.amd64 -O cloud-sql-proxy
+          chmod +x cloud-sql-proxy
+
+      # 🆕 Start Cloud SQL Auth Proxy in the background
+      - name: Start Cloud SQL Auth Proxy
+        run: |
+          ./cloud-sql-proxy ${{ secrets.INSTANCE_CONNECTION_NAME }} --address 127.0.0.1 --port 5432 &
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+      # 🆕 Run Prisma Migrations through the proxy
       - name: Run Prisma Migrations
         run: npx prisma migrate deploy
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: "postgresql://postgres:${{ secrets.DB_PASSWORD }}@127.0.0.1:5432/YOUR_DATABASE_NAME?schema=public"
 
       - name: Configure Docker
         run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
