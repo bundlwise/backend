@@ -58,3 +58,6 @@ prisma/migrations/*/
 
 # Cloud SQL Proxy
 cloud-sql-proxy
+.env.prod
+.env.dev
+.env

@@ -6,10 +6,10 @@ on:
       - prod  # Runs only on prod branch
 
 env:
-  PROJECT_ID: bundlwise16           # Your GCP Project ID
-  GAR_LOCATION: asia-south1         # Container registry location
-  SERVICE: bundlwise-backend        # Cloud Run service name
-  REGION: asia-south1               # Deployment region
+  PROJECT_ID: bundlwise16
+  GAR_LOCATION: asia-south1
+  SERVICE: bundlwise-backend
+  REGION: asia-south1
 
 jobs:
   deploy:
@@ -61,11 +61,9 @@ jobs:
         env:
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
-      # 🆕 Run Prisma Migrations through the proxy
+      # ✅ Run Prisma Migrations with DATABASE_URL forced inline
       - name: Run Prisma Migrations
-        run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: DATABASE_URL="${{ secrets.DATABASE_URL }}" npx prisma migrate deploy
 
       - name: Configure Docker
         run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
